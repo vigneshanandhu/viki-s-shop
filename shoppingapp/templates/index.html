@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Home</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+            padding: 20px 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+        }
+        .shop-name {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 6px #007bff44;
+        }
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 350px;
+            border: none;
+            border-radius: 20px 0 0 20px;
+            outline: none;
+            font-size: 1em;
+            background: #f5f7fa;
+            box-shadow: 0 1px 4px #007bff22;
+        }
+        .search-bar button {
+            padding: 10px 22px;
+            background: #ff9800;
+            color: #fff;
+            border: none;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            box-shadow: 0 1px 4px #ff980022;
+            transition: background 0.2s;
+        }
+        .search-bar button:hover {
+            background: #ff5722;
+        }
+        .login-btn {
+            padding: 10px 22px;
+            background: #fff;
+            color: #007bff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            box-shadow: 0 1px 4px #007bff22;
+            transition: background 0.2s, color 0.2s;
+        }
+        .login-btn:hover {
+            background: #007bff;
+            color: #fff;
+        }
+        .section {
+            margin: 40px 0;
+        }
+        .section-title {
+            font-size: 1.5em;
+            margin-bottom: 24px;
+            color: #007bff;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .products, .deals, .brands {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product, .deal, .brand {
+            background: #fff;
+            border: none;
+            border-radius: 18px;
+            padding: 20px 10px;
+            width: 180px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,123,255,0.07);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .product:hover, .deal:hover, .brand:hover {
+            transform: translateY(-8px) scale(1.04);
+            box-shadow: 0 8px 24px rgba(0,123,255,0.13);
+            z-index: 2;
+        }
+        .product img, .brand img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px #007bff22;
+        }
+        .product div[style*="font-weight:600;"] {
+            margin-bottom: 6px;
+            font-size: 1.08em;
+        }
+        .categories {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        .category {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            border: none;
+            border-radius: 18px;
+            padding: 18px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,123,255,0.07);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .category:hover {
+            transform: translateY(-8px) scale(1.04);
+            box-shadow: 0 8px 24px rgba(0,123,255,0.13);
+            z-index: 2;
+        }
+        .category img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px #007bff22;
+        }
+        .category-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #007bff;
+            margin-top: 4px;
+        }
+        .slider-container {
+            width: 80%;
+            margin: 32px auto 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 4px 16px rgba(0,123,255,0.09);
+            background: #fff;
+        }
+        .slider-images {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(.77,0,.18,1);
+            width: 100%;
+        }
+        .slider-images img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border-radius: 18px;
+        }
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 12px;
+            gap: 10px;
+        }
+        .slider-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            border: none;
+            outline: none;
+        }
+        .slider-dot.active {
+            background: #007bff;
+            transform: scale(1.2);
+        }
+        .footer {
+            background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+            color: #fff;
+            padding: 40px 0 24px 0;
+            text-align: center;
+            margin-top: 48px;
+            font-size: 1em;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.07);
+        }
+        .footer .footer-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 1px 1px 6px #007bff44;
+        }
+        .footer .footer-desc {
+            margin: 8px 0;
+            color: #e0eafc;
+        }
+        .footer .footer-contact {
+            margin: 8px 0;
+            color: #cfdef3;
+            font-size: 1em;
+        }
+        .footer .footer-copy {
+            margin: 8px 0;
+            color: #c3cfe2;
+            font-size: 0.98em;
+        }
+        @media (max-width: 900px) {
+            .header { flex-direction: column; gap: 16px; }
+            .categories, .products, .brands { flex-direction: column; align-items: center; }
+            .slider-container { width: 98%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="shop-name">Viki's Shop</div>
+        <form class="search-bar" method="get" action="/search/">
+            <input type="text" name="q" placeholder="Search products...">
+            <button type="submit">Search</button>
+        </form>
+        <a href="{% url 'shoppingapp:login' %}"><button class="login-btn">Login</button></a>
+    </div>
+
+  
+
+    <!-- Image Slider Start -->
+    <div class="slider-container">
+        <div class="slider-images" id="sliderImages">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Slide 1">
+            <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80" alt="Slide 2">
+            <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80" alt="Slide 3">
+        </div>
+        <div class="slider-dots" id="sliderDots"></div>
+    </div>
+    <!-- Image Slider End -->
+
+    <div class="section">
+        <div class="section-title">Shop by Category</div>
+        <div class="categories">
+            <div class="category">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Ethnic Wear">
+                <div class="category-title">Ethnic Wear</div>
+            </div>
+            <div class="category">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Western Dress">
+                <div class="category-title">Western Dress</div>
+            </div>
+            <div class="category">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Menswear">
+                <div class="category-title">Menswear</div>
+            </div>
+            <div class="category">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Footwear">
+                <div class="category-title">Footwear</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">New Arrivals</div>
+        <div class="products">
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Floral Dress" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Floral Summer Dress</div>
+                <div style="color:#007bff;">₹999</div>
+            </div>
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Sneakers" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Trendy Sneakers</div>
+                <div style="color:#007bff;">₹1,499</div>
+            </div>
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Men's Shirt" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Men's Casual Shirt</div>
+                <div style="color:#007bff;">₹799</div>
+            </div>
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Ethnic Kurti" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Ethnic Kurti</div>
+                <div style="color:#007bff;">₹1,199</div>
+            </div>
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80" alt="Handbag" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Stylish Handbag</div>
+                <div style="color:#007bff;">₹1,299</div>
+            </div>
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Men's Shirt" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Classic Watch</div>
+                <div style="color:#007bff;">₹2,499</div>
+            </div>
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Ethnic Kurti" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Kids Party Dress</div>
+                <div style="color:#007bff;">₹899</div>
+            </div>
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Sports Shoes" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Sports Shoes</div>
+                <div style="color:#007bff;">₹1,799</div>
+            </div>
+             <div class="product">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Floral Dress" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Floral Summer Dress</div>
+                <div style="color:#007bff;">₹999</div>
+            </div>
+            <div class="product">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Sneakers" style="width:100px;height:100px;border-radius:6px;">
+                <div style="font-weight:600;">Trendy Sneakers</div>
+                <div style="color:#007bff;">₹1,499</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Brands</div>
+        <div class="brands" style="display:flex;gap:32px;justify-content:center;flex-wrap:wrap;">
+            <div class="brand">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Peter England Clothes" style="width:120px;height:120px;object-fit:cover;background:#fff;border-radius:6px;">
+                <div style="font-weight:600;margin-top:10px;color:#007bff;">Peter England</div>
+            </div>
+            <div class="brand">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Levi's Clothes" style="width:120px;height:120px;object-fit:cover;background:#fff;border-radius:6px;">
+                <div style="font-weight:600;margin-top:10px;color:#007bff;">Levi's</div>
+            </div>
+            <div class="brand">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Nike Footwear" style="width:120px;height:120px;object-fit:cover;background:#fff;border-radius:6px;">
+                <div style="font-weight:600;margin-top:10px;color:#007bff;">Nike</div>
+            </div>
+            <div class="brand">
+                <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80" alt="Adidas Footwear" style="width:120px;height:120px;object-fit:cover;background:#fff;border-radius:6px;">
+                <div style="font-weight:600;margin-top:10px;color:#007bff;">Adidas</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-title">Viki's Shop</div>
+        <div class="footer-desc">Your one-stop destination for fashion, footwear, and more.</div>
+        <div class="footer-contact">Contact: support@vikisshop.com | Phone: +91-9876543210</div>
+        <div class="footer-copy">&copy; 2024 Viki's Shop. All rights reserved.</div>
+    </footer>
+
+    <script>
+        // Slider logic with dots
+        const sliderImages = document.getElementById('sliderImages');
+        const totalSlides = sliderImages.children.length;
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            sliderImages.style.transform = 'translateX(' + (-index * 100) + '%)';
+            currentSlide = index;
+            updateDots();
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.slider-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        // Create dots
+        const sliderDots = document.getElementById('sliderDots');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'slider-dot';
+            dot.onclick = () => showSlide(i);
+            sliderDots.appendChild(dot);
+        }
+
+        // Auto-slide every 4 seconds
+        setInterval(() => { showSlide(currentSlide + 1); }, 4000);
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
