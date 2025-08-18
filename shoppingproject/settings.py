@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,11 +77,15 @@ WSGI_APPLICATION = 'shoppingproject.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'shoppingdb',  # Replace with your database name
+            'USER': 'root',               # Default XAMPP MySQL user
+            'PASSWORD': '',               # Default XAMPP MySQL password (often empty)
+            'HOST': '127.0.0.1',          # Or 'localhost'
+            'PORT': '3306',               # Default MySQL port
+        }
     }
-}
 
 
 # Password validation
@@ -121,3 +128,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Razorpay Configuration
+RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID', default='rzp_test_R6KTxj21EIK1Yf')
+RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET', default='y7Wskk6SxtVdimVICKjNgsDy')
+
+# Validate Razorpay keys
+if not RAZORPAY_KEY_ID or not RAZORPAY_KEY_SECRET:
+    import warnings
+    warnings.warn(
+        "Razorpay credentials are not configured. "
+        "Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET environment variables. "
+        "Payment functionality will be disabled.",
+        UserWarning
+    )

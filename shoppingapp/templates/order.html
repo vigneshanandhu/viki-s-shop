@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container py-5">
+    <h1 class="text-center mb-4">Order Details</h1>
+
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Delivery Address</h5>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{% url 'shoppingapp:order' %}" id="orderForm">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="full_name" name="full_name" value="{{ user.first_name }} {{ user.last_name }}" required />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required />
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" name="phone" required />
+              </div>
+              <div class="mb-3">
+                <label for="address" class="form-label">Delivery Address</label>
+                <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter your complete delivery address" required></textarea>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="city" class="form-label">City</label>
+                  <input type="text" class="form-control" id="city" name="city" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="zip_code" class="form-label">ZIP Code</label>
+                  <input type="text" class="form-control" id="zip_code" name="zip_code" required />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Order Items</h5>
+          </div>
+          <div class="card-body">
+            {% for item in cart_items %}
+              <div class="row mb-3 border-bottom pb-2">
+                <div class="col-md-2">
+                  <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid rounded" style="max-height: 60px; object-fit: cover;" />
+                </div>
+                <div class="col-md-6">
+                  <h6>{{ item.product.name }}</h6>
+                </div>
+                <div class="col-md-2">
+                  <span>Qty: {{ item.quantity }}</span>
+                </div>
+                <div class="col-md-2 text-end">
+                  <span>₹{{ item.total_price }}</span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Order Summary</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <span>₹{{ subtotal }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Shipping:</span>
+              <span>₹{{ shipping }}</span>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between fw-bold">
+              <span>Total Amount:</span>
+              <span>₹{{ total_amount }}</span>
+            </div>
+
+            <div class="mt-4">
+              <a href="{% url 'shoppingapp:create_razorpay_order' %}" type="button" class="btn btn-success w-100" id="rzp-button1">Proceed to Pay ₹{{ total_amount }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <div class="card-header bg-warning text-dark">
+            <h6 class="mb-0">Payment Information</h6>
+          </div>
+          <div class="card-body">
+            <p class="small text-muted">
+              <i class="fas fa-lock"></i> Secure payment gateway will be provided
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Razorpay Integration -->
+
+  <script>
+document.getElementById('rzp-button1').onclick = function(e){
+    e.preventDefault();
+    
+    const form = document.getElementById('orderForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    const formData = new FormData(form);
+    const orderData = {
+        full_name: formData.get('full_name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        address: formData.get('address'),
+        city: formData.get('city'),
+        zip_code: formData.get('zip_code'),
+        amount: {{ total_amount|floatformat:2 }},
+    };
+    fetch("{% url 'shoppingapp:create_razorpay_order' %}", {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify(orderData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok: " + response.statusText);
+        }
+    return response.json();
+})
+.then(data => {
+    if (data.success) {
+        var options = {
+            "key": data.razorpay_key_id,  // ✅ directly from backend
+
+            "amount": data.amount,
+            "currency": "INR",
+            "name": "Shopping App",
+            "description": "Order Payment",
+            "order_id": data.order_id,
+            "handler": function (response){
+                fetch("{% url 'shoppingapp:verify_payment' %}", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error("Verification request failed: " + res.statusText);
+                    }
+                    return res.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        window.location.href = "{% url 'shoppingapp:order_success' 0 %}".replace('0', result.order_id);
+                    } else {
+                        alert('Payment verification failed: ' + result.error);
+                        console.error(result);
+                    }
+                })
+                .catch(err => {
+                    alert("Payment verification error: " + err.message);
+                    console.error(err);
+                });
+            },
+            "prefill": {
+                "name": orderData.full_name,
+                "email": orderData.email,
+                "contact": orderData.phone
+            },
+            "theme": { "color": "#3399cc" }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    } else {
+        alert('Error creating order: ' + data.error);
+    }
+})
+.catch(err => {
+    alert("Order creation failed: " + err.message);
+    console.error(err);
+});
+
+};
+</script>
+
+  <style>
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+</style>
+{% endblock %}

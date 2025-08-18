@@ -1,0 +1,5 @@
+Django==5.2.5
+mysqlclient==2.2.4
+python-decouple==3.8
+razorpay==1.4.2
+django-jazzmin==3.0.0
