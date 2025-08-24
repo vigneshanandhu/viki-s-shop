@@ -336,3 +336,27 @@ def verify_payment(request):
 def order_success(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'order_success.html', {'order': order})
+
+def about(request):
+    context = {
+        "title": "About Us",
+        "description": "Welcome to Viki's Shop – your trusted online shopping destination. "
+                       "We bring you the latest fashion, electronics, home essentials, and more "
+                       "at the best prices. Our mission is to make shopping simple, enjoyable, "
+                       "and accessible for everyone.",
+        "mission": "To provide quality products at affordable prices with quick delivery "
+                   "and excellent customer support.",
+        "vision": "To become the most customer-centric shopping platform where people can "
+                  "discover and buy anything online with confidence.",
+        "team": [
+            {"name": "Vignesh Anandhu", "role": "Founder & CEO"},
+            {"name": "Priya Sharma", "role": "Head of Marketing"},
+            {"name": "Arjun Patel", "role": "Tech Lead"},
+        ]
+    }
+    return render(request, "about.html", context)
+
+
+def contact(request):
+    return render(request, "contact.html")
+

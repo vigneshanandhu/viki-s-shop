@@ -21,4 +21,7 @@ urlpatterns = [
     path('create-razorpay-order/', views.create_razorpay_order, name='create_razorpay_order'),
     path('verify-payment/', views.verify_payment, name='verify_payment'),
     path('order-success/<int:order_id>/', views.order_success, name='order_success'),
+    path('about/', views.about, name="about"),
+    path('contact/', views.contact, name="contact")
+
 ]
