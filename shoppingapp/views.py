@@ -10,8 +10,9 @@ from .decorators import redirect_authenticated_user
 from django.http import JsonResponse
 from urllib.parse import quote_plus
 from decimal import Decimal
-import razorpay
+import razorpay 
 from django.conf import settings
+from razorpay import client
 import json
 import hmac
 import hashlib
