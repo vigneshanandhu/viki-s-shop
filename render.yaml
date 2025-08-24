@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: shoppingproject
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn shoppingproject.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        fromSecret: django-secret-key
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: RAZORPAY_KEY_ID
+        fromSecret: razorpay-key-id
+      - key: RAZORPAY_KEY_SECRET
+        fromSecret: razorpay-key-secret
