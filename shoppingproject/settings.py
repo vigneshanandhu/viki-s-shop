@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-_f##f9%!vi2t9w@6-7i3a
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Update ALLOWED_HOSTS for production
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS','').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
 
 # Application definition
