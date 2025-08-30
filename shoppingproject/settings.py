@@ -34,7 +34,11 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-_f##f9%!vi2t9w@6-7i3awvb
 DEBUG = env.bool('DEBUG', default=False)
 
 # Update ALLOWED_HOSTS for production
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'viki-s-shop.onrender.com',
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # Application definition
