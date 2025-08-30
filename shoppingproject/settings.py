@@ -12,20 +12,26 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import config
+import environ
+
+# Initialize environ
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Read .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-_f##f9%!vi2t9w@6-7i3awvb(l9shq#2hw=gfru$=x65w621=+')
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-_f##f9%!vi2t9w@6-7i3awvb(l9shq#2hw=gfru$=x65w621=+')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = env.bool('DEBUG', default=False)
 
 # Update ALLOWED_HOSTS for production
 ALLOWED_HOSTS = ['*']
@@ -139,8 +145,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Razorpay Configuration
-RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID', default='rzp_test_R6KTxj21EIK1Yf')
-RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET', default='y7Wskk6SxtVdimVICKjNgsDy')
+RAZORPAY_KEY_ID = env('RAZORPAY_KEY_ID', default='rzp_test_R6KTxj21EIK1Yf')
+RAZORPAY_KEY_SECRET = env('RAZORPAY_KEY_SECRET', default='y7Wskk6SxtVdimVICKjNgsDy')
 
 # Validate Razorpay keys
 if not RAZORPAY_KEY_ID or not RAZORPAY_KEY_SECRET:
@@ -148,6 +154,4 @@ if not RAZORPAY_KEY_ID or not RAZORPAY_KEY_SECRET:
     warnings.warn(
         "Razorpay credentials are not configured. "
         "Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET environment variables. "
-        "Payment functionality will be disabled.",
-        UserWarning
     )
