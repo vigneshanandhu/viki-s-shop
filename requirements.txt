@@ -3,10 +3,11 @@ certifi==2025.8.3
 charset-normalizer==3.4.3
 click==8.2.1
 colorama==0.4.6
+dj-database-url==3.0.1
 Django==5.2.5
 django-allauth==65.11.0
 django-crispy-forms==2.4
-django-environ==0.11.2
+django-environ==0.12.0
 django-jazzmin==3.0.0
 gunicorn==23.0.0
 h11==0.16.0
@@ -14,6 +15,7 @@ idna==3.10
 mysqlclient==2.2.4
 packaging==25.0
 pillow==11.3.0
+psycopg2-binary==2.9.10
 python-decouple==3.8
 razorpay==1.4.2
 requests==2.32.4

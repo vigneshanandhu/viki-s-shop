@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+import dj_database_url
 
 # Initialize environ
 env = environ.Env()
@@ -88,15 +89,10 @@ WSGI_APPLICATION = 'shoppingproject.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'shoppingdb',  # Replace with your database name
-            'USER': 'root',               # Default XAMPP MySQL user
-            'PASSWORD': '',               # Default XAMPP MySQL password (often empty)
-            'HOST': '127.0.0.1',          # Or 'localhost'
-            'PORT': '3306',               # Default MySQL port
-        }
+        'default': dj_database_url.parse(env('DATABASE_URL'))
     }
+
+
 
 
 # Password validation
