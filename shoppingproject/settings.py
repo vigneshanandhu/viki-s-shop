@@ -31,14 +31,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-_f##f9%!vi2t9w@6-7i3awvb(l9shq#2hw=gfru$=x65w621=+')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG', default=True)
+DEBUG = env.bool('DEBUG', default=False)
 
 # Update ALLOWED_HOSTS for production
-ALLOWED_HOSTS = [
-    'viki-s-shop.onrender.com',
-    'localhost',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['viki-s-shop-1.onrender.com', 'localhost', '127.0.0.1'])
 
 
 # Application definition
