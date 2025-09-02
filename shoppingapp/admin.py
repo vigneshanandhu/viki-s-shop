@@ -10,7 +10,7 @@ class ReviewInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'price', 'image')
-    inlines = [ReviewInline]
+    
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
