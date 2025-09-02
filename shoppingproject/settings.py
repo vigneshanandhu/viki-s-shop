@@ -17,6 +17,7 @@ import dj_database_url
 
 # Initialize environ
 env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -89,8 +90,18 @@ WSGI_APPLICATION = 'shoppingproject.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-        'default': dj_database_url.parse(env('DATABASE_URL'))
+        'default': dj_database_url.config(default=env('DATABASE_URL'),conn_max_age=600,ssl_require=True)
     }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'shoppingdb_3itl',
+#         'USER': 'vignesh',
+#         'PASSWORD': 'vignesh2003',
+#         'HOST': 'localhost',  # Or the IP address of your PostgreSQL server
+#         'PORT': '5432',       # Or the port your PostgreSQL server is using
+#     }
+# }
 
 
 
